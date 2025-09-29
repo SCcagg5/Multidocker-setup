@@ -1,17 +1,16 @@
 version: "3.9"
 
-x-student: &student-template
+x-student: &student
   build:
     context: .
     dockerfile: Dockerfile
   restart: unless-stopped
-  volumes:
-    - student_home:/home/debian
 
 services:
   student01:
-    <<: *student-template
+    <<: *student
     container_name: student01
+    hostname: student01
     ports:
       - "2221:22"
       - "5433:5432"
@@ -19,8 +18,9 @@ services:
       - student01_home:/home/debian
 
   student02:
-    <<: *student-template
+    <<: *student
     container_name: student02
+    hostname: student02
     ports:
       - "2222:22"
       - "5434:5432"
@@ -28,8 +28,9 @@ services:
       - student02_home:/home/debian
 
   student03:
-    <<: *student-template
+    <<: *student
     container_name: student03
+    hostname: student03
     ports:
       - "2223:22"
       - "5435:5432"
@@ -37,8 +38,9 @@ services:
       - student03_home:/home/debian
 
   student04:
-    <<: *student-template
+    <<: *student
     container_name: student04
+    hostname: student04
     ports:
       - "2224:22"
       - "5436:5432"
@@ -46,8 +48,9 @@ services:
       - student04_home:/home/debian
 
   student05:
-    <<: *student-template
+    <<: *student
     container_name: student05
+    hostname: student05
     ports:
       - "2225:22"
       - "5437:5432"
@@ -55,8 +58,9 @@ services:
       - student05_home:/home/debian
 
   student06:
-    <<: *student-template
+    <<: *student
     container_name: student06
+    hostname: student06
     ports:
       - "2226:22"
       - "5438:5432"
@@ -64,8 +68,9 @@ services:
       - student06_home:/home/debian
 
   student07:
-    <<: *student-template
+    <<: *student
     container_name: student07
+    hostname: student07
     ports:
       - "2227:22"
       - "5439:5432"
@@ -73,8 +78,9 @@ services:
       - student07_home:/home/debian
 
   student08:
-    <<: *student-template
+    <<: *student
     container_name: student08
+    hostname: student08
     ports:
       - "2228:22"
       - "5440:5432"
@@ -82,8 +88,9 @@ services:
       - student08_home:/home/debian
 
   student09:
-    <<: *student-template
+    <<: *student
     container_name: student09
+    hostname: student09
     ports:
       - "2229:22"
       - "5441:5432"
@@ -91,8 +98,9 @@ services:
       - student09_home:/home/debian
 
   student10:
-    <<: *student-template
+    <<: *student
     container_name: student10
+    hostname: student10
     ports:
       - "2230:22"
       - "5442:5432"
