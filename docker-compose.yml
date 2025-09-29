@@ -1,10 +1,17 @@
 version: "3.9"
 
+x-student: &student-template
+  build:
+    context: .
+    dockerfile: Dockerfile
+  restart: unless-stopped
+  volumes:
+    - student_home:/home/debian
+
 services:
   student01:
-    image: debian-student:latest
+    <<: *student-template
     container_name: student01
-    restart: unless-stopped
     ports:
       - "2221:22"
       - "5433:5432"
@@ -12,9 +19,8 @@ services:
       - student01_home:/home/debian
 
   student02:
-    image: debian-student:latest
+    <<: *student-template
     container_name: student02
-    restart: unless-stopped
     ports:
       - "2222:22"
       - "5434:5432"
@@ -22,9 +28,8 @@ services:
       - student02_home:/home/debian
 
   student03:
-    image: debian-student:latest
+    <<: *student-template
     container_name: student03
-    restart: unless-stopped
     ports:
       - "2223:22"
       - "5435:5432"
@@ -32,9 +37,8 @@ services:
       - student03_home:/home/debian
 
   student04:
-    image: debian-student:latest
+    <<: *student-template
     container_name: student04
-    restart: unless-stopped
     ports:
       - "2224:22"
       - "5436:5432"
@@ -42,9 +46,8 @@ services:
       - student04_home:/home/debian
 
   student05:
-    image: debian-student:latest
+    <<: *student-template
     container_name: student05
-    restart: unless-stopped
     ports:
       - "2225:22"
       - "5437:5432"
@@ -52,9 +55,8 @@ services:
       - student05_home:/home/debian
 
   student06:
-    image: debian-student:latest
+    <<: *student-template
     container_name: student06
-    restart: unless-stopped
     ports:
       - "2226:22"
       - "5438:5432"
@@ -62,9 +64,8 @@ services:
       - student06_home:/home/debian
 
   student07:
-    image: debian-student:latest
+    <<: *student-template
     container_name: student07
-    restart: unless-stopped
     ports:
       - "2227:22"
       - "5439:5432"
@@ -72,9 +73,8 @@ services:
       - student07_home:/home/debian
 
   student08:
-    image: debian-student:latest
+    <<: *student-template
     container_name: student08
-    restart: unless-stopped
     ports:
       - "2228:22"
       - "5440:5432"
@@ -82,9 +82,8 @@ services:
       - student08_home:/home/debian
 
   student09:
-    image: debian-student:latest
+    <<: *student-template
     container_name: student09
-    restart: unless-stopped
     ports:
       - "2229:22"
       - "5441:5432"
@@ -92,9 +91,8 @@ services:
       - student09_home:/home/debian
 
   student10:
-    image: debian-student:latest
+    <<: *student-template
     container_name: student10
-    restart: unless-stopped
     ports:
       - "2230:22"
       - "5442:5432"
