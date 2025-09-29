@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       openssh-server sudo curl git wget ca-certificates gnupg2 lsb-release \
-      vim less unzip bash procps passwd dos2unix \
+      vim less unzip bash procps passwd dos2unix coreutils \
  && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /var/run/sshd
@@ -18,7 +18,6 @@ RUN sed -i 's/^#\?PermitRootLogin .*/PermitRootLogin no/' /etc/ssh/sshd_config \
 COPY <<'EOT' /usr/local/bin/entrypoint.sh
 #!/usr/bin/env bash
 set -Eeuo pipefail
-
 trap 'code=$?; echo "[ERROR] Entrypoint failed with exit code ${code}"; exit ${code}' ERR
 
 echo "[INFO] Entrypoint starting..."
@@ -49,7 +48,12 @@ if [ -f "${PWFILE}" ]; then
   echo "[INFO] Reusing existing password from ${PWFILE}"
 else
   echo "[INFO] Generating a new random password..."
-  PASS="$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 16)"
+  set +o pipefail
+  PASS="$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 16 || true)"
+  set -o pipefail
+  if [ -z "${PASS}" ]; then
+    PASS="$(head -c 24 /dev/urandom | base64 | tr -dc 'A-Za-z0-9' | head -c 16)"
+  fi
   echo "${PASS}" > "${PWFILE}"
   chown "${USER}:${USER}" "${PWFILE}"
   chmod 600 "${PWFILE}"
