@@ -17,39 +17,50 @@ RUN sed -i 's/^#\?PermitRootLogin .*/PermitRootLogin no/' /etc/ssh/sshd_config \
 
 COPY <<'EOT' /usr/local/bin/entrypoint.sh
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
 
 USER=debian
 PWFILE="/home/${USER}/.initial_password"
 
+mkdir -p "/home/${USER}"
+
 if ! id -u "${USER}" >/dev/null 2>&1; then
-  useradd -m -s /bin/bash "${USER}"
-  usermod -aG sudo "${USER}"
-  echo "${USER} ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USER}
-  chmod 440 /etc/sudoers.d/${USER}
+  useradd -m -d "/home/${USER}" -s /bin/bash "${USER}" || true
 fi
+
+chown -R "${USER}:${USER}" "/home/${USER}"
+
+usermod -aG sudo "${USER}" || true
+echo "${USER} ALL=(ALL:ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${USER}"
+chmod 440 "/etc/sudoers.d/${USER}"
 
 if [ -f "${PWFILE}" ]; then
   PASS="$(cat "${PWFILE}")"
 else
   PASS="$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 16)"
-  echo "${USER}:${PASS}" | chpasswd
-  mkdir -p "/home/${USER}"
   echo "${PASS}" > "${PWFILE}"
   chown "${USER}:${USER}" "${PWFILE}"
   chmod 600 "${PWFILE}"
 fi
 
-echo "${USER}:${PASS}" | chpasswd >/dev/null 2>&1 || true
-
-echo "[INFO] CONTAINER START - user=${USER} password=${PASS}" >&2
+echo "${USER}:${PASS}" | chpasswd || true
 
 su - "${USER}" -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh" || true
+
+mkdir -p /var/run/sshd && chmod 755 /var/run/sshd
+ssh-keygen -A
+
+if ! /usr/sbin/sshd -t -E /var/log/sshd_config_check.log; then
+  cat /var/log/sshd_config_check.log >&2 || true
+  exit 1
+fi
+
+echo "[INFO] CONTAINER START - user=${USER} password=${PASS}" >&2
 
 exec /usr/sbin/sshd -D -e
 EOT
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-EXPOSE 22
+EXPOSE 22 5432
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
