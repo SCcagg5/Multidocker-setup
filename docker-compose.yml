@@ -13,9 +13,11 @@ services:
     hostname: student01
     ports:
       - "2221:22"
-      - "5433:5432"
+      - "5431:8080"
     volumes:
       - student01_home:/home/debian
+      - student01_db:/var/lib/mysql
+      - student01_pma:/usr/share/phpmyadmin
 
   student02:
     <<: *student
@@ -23,9 +25,11 @@ services:
     hostname: student02
     ports:
       - "2222:22"
-      - "5434:5432"
+      - "5432:8080"
     volumes:
       - student02_home:/home/debian
+      - student02_db:/var/lib/mysql
+      - student02_pma:/usr/share/phpmyadmin
 
   student03:
     <<: *student
@@ -33,9 +37,11 @@ services:
     hostname: student03
     ports:
       - "2223:22"
-      - "5435:5432"
+      - "5433:8080"
     volumes:
       - student03_home:/home/debian
+      - student03_db:/var/lib/mysql
+      - student03_pma:/usr/share/phpmyadmin
 
   student04:
     <<: *student
@@ -43,9 +49,11 @@ services:
     hostname: student04
     ports:
       - "2224:22"
-      - "5436:5432"
+      - "5434:8080"
     volumes:
       - student04_home:/home/debian
+      - student04_db:/var/lib/mysql
+      - student04_pma:/usr/share/phpmyadmin
 
   student05:
     <<: *student
@@ -53,9 +61,11 @@ services:
     hostname: student05
     ports:
       - "2225:22"
-      - "5437:5432"
+      - "5435:8080"
     volumes:
       - student05_home:/home/debian
+      - student05_db:/var/lib/mysql
+      - student05_pma:/usr/share/phpmyadmin
 
   student06:
     <<: *student
@@ -63,9 +73,11 @@ services:
     hostname: student06
     ports:
       - "2226:22"
-      - "5438:5432"
+      - "5436:8080"
     volumes:
       - student06_home:/home/debian
+      - student06_db:/var/lib/mysql
+      - student06_pma:/usr/share/phpmyadmin
 
   student07:
     <<: *student
@@ -73,9 +85,11 @@ services:
     hostname: student07
     ports:
       - "2227:22"
-      - "5439:5432"
+      - "5437:8080"
     volumes:
       - student07_home:/home/debian
+      - student07_db:/var/lib/mysql
+      - student07_pma:/usr/share/phpmyadmin
 
   student08:
     <<: *student
@@ -83,9 +97,11 @@ services:
     hostname: student08
     ports:
       - "2228:22"
-      - "5440:5432"
+      - "5438:8080"
     volumes:
       - student08_home:/home/debian
+      - student08_db:/var/lib/mysql
+      - student08_pma:/usr/share/phpmyadmin
 
   student09:
     <<: *student
@@ -93,9 +109,11 @@ services:
     hostname: student09
     ports:
       - "2229:22"
-      - "5441:5432"
+      - "5439:8080"
     volumes:
       - student09_home:/home/debian
+      - student09_db:/var/lib/mysql
+      - student09_pma:/usr/share/phpmyadmin
 
   student10:
     <<: *student
@@ -103,18 +121,40 @@ services:
     hostname: student10
     ports:
       - "2230:22"
-      - "5442:5432"
+      - "5440:8080"
     volumes:
       - student10_home:/home/debian
+      - student10_db:/var/lib/mysql
+      - student10_pma:/usr/share/phpmyadmin
 
 volumes:
   student01_home:
+  student01_db:
+  student01_pma:
   student02_home:
+  student02_db:
+  student02_pma:
   student03_home:
+  student03_db:
+  student03_pma:
   student04_home:
+  student04_db:
+  student04_pma:
   student05_home:
+  student05_db:
+  student05_pma:
   student06_home:
+  student06_db:
+  student06_pma:
   student07_home:
+  student07_db:
+  student07_pma:
   student08_home:
+  student08_db:
+  student08_pma:
   student09_home:
+  student09_db:
+  student09_pma:
   student10_home:
+  student10_db:
+  student10_pma:
